@@ -88,11 +88,11 @@ def _is_trivial_match(candidate, change_points, n_timepoints, exclusion_radius=0
         If the 'candidate' change point is a trivial match to the ones in change_points
     """
     change_points = [0] + change_points + [n_timepoints]
-    exclusion_radius = np.int64(n_timepoints * exclusion_radius)
+    exclusion_zone = np.int64(n_timepoints * exclusion_radius)
 
     for change_point in change_points:
-        left_begin = max(0, change_point - exclusion_radius)
-        right_end = min(n_timepoints, change_point + exclusion_radius)
+        left_begin = max(0, change_point - exclusion_zone)
+        right_end = min(n_timepoints, change_point + exclusion_zone)
         if candidate in range(left_begin, right_end):
             return True
 
@@ -155,7 +155,8 @@ def _segmentation(X, clasp, n_change_points=None, exclusion_radius=0.05):
 
         for ranges in [left_range, right_range]:
             # create and enqueue left local profile
-            if len(ranges) > period_size:
+            exclusion_zone = np.int64(len(ranges) * exclusion_radius)
+            if len(ranges) - period_size > 2 * exclusion_zone:
                 profile = clasp.transform(X[ranges])
                 change_point = np.argmax(profile)
                 score = profile[change_point]
@@ -212,8 +213,7 @@ class ClaSPSegmentation(BaseSeriesAnnotator):
 
     Examples
     --------
-    >>> from clasp.annotation.clasp import ClaSPSegmentation
-    >>> from clasp.annotation.clasp import find_dominant_window_sizes
+    >>> from clasp.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
     >>> from sktime.datasets import load_gun_point_segmentation
     >>> X, true_period_size, cps = load_gun_point_segmentation()
     >>> dominant_period_size = find_dominant_window_sizes(X)

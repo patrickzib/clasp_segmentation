@@ -5,8 +5,9 @@ __author__ = ["patrickzib"]
 __all__ = []
 
 import numpy as np
+import pandas as pd
 
-from clasp.annotation.clasp import ClaSPSegmentation
+from clasp.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
 from sktime.datasets import load_gun_point_segmentation
 
 
@@ -47,9 +48,6 @@ def test_clasp_dense():
 
 
 def test_clasp_activity():
-    from sktime.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
-    import pandas as pd
-
     def load_data():
         np_cols = ["x-acc", "y-acc", "z-acc", "x-gyro", "y-gyro",
                    "z-gyro", "x-mag", "y-mag", "z-mag", "change_points",
@@ -62,16 +60,16 @@ def test_clasp_activity():
 
     df = load_data()
 
-    for i, series in enumerate(df[["x-acc", "change_points"]].iterrows()):
-        if i == 4:
-            ts = series[1]["x-acc"]
-            true_cps = series[1]["change_points"]
-            period_size = find_dominant_window_sizes(ts) * 2
-            clasp = ClaSPSegmentation(period_length=period_size, n_cps=5, fmt="sparse")
-            found_cps = clasp.fit_predict(ts)
+    dataset = df[["x-acc", "change_points"]].iloc[172:173]
 
-            print("i", i + 1,
-                  "Period-Size", period_size,
-                  "Found", found_cps,
-                  "True", true_cps
-                  )
+    ts = dataset["x-acc"].values[0]
+    true_cps = dataset["change_points"].values[0]
+    m = find_dominant_window_sizes(ts) * 2
+    clasp = ClaSPSegmentation(period_length=m, n_cps=5, fmt="sparse")
+    found_cps = clasp.fit_predict(ts)
+
+    print("i", # i + 1,
+          "Period-Size", m,
+          "Found", found_cps,
+          "True", true_cps
+          )
