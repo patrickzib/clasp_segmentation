@@ -60,7 +60,7 @@ def test_clasp_activity():
 
     df = load_data()
 
-    dataset = df[["x-acc", "change_points"]].iloc[172:173]
+    dataset = df[["x-acc", "change_points"]].iloc[213:214]
 
     ts = dataset["x-acc"].values[0]
     true_cps = dataset["change_points"].values[0]

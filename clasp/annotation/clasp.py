@@ -14,6 +14,7 @@ As described in
 }
 """
 
+import warnings
 from sktime.annotation.base import BaseSeriesAnnotator
 
 __author__ = ["ermshaua", "patrickzib"]
@@ -262,7 +263,15 @@ class ClaSPSegmentation(BaseSeriesAnnotator):
             fmt=sparse : only the found change point locations are returned
             fnt=dense : an interval series is returned which contains the segmetation.
         """
-        self.found_cps, self.profiles, self.scores = self._run_clasp(X)
+
+        if len(X) - self.period_length < 2 * self.exclusion_radius * len(X):
+            warnings.warn(
+                "Period-Length is larger than size of the time series"
+            )
+
+            self.found_cps, self.profiles, self.scores = [], [], []
+        else:
+            self.found_cps, self.profiles, self.scores = self._run_clasp(X)
 
         # Change Points
         if self.fmt == "sparse":
