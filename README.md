@@ -35,7 +35,7 @@ See also the notebooks-folder for a Jupyter-Notebook
 
 ## Citing
 
-If you use this algorithm or publication, please cite (ArXiv: https://arxiv.org/abs/2301.10194):
+If you use this algorithm or publication, please cite:
 
 ```bibtex
 @inproceedings{clasp2021,
