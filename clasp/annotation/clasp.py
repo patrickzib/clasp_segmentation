@@ -279,7 +279,7 @@ class ClaSPSegmentation(BaseSeriesAnnotator):
 
         # Segmentation
         elif self.fmt == "dense":
-            return self._get_interval_series(X, self.found_cps, dtype='int64')
+            return self._get_interval_series(X, self.found_cps, dtype='float64')
 
     def _predict_scores(self, X):
         """Return scores in ClaSP's profile for each annotation.
