@@ -94,8 +94,6 @@ def _compute_distances_iterative(X, m, k):
         The knns (offsets!) for each subsequence in X
     """
     length = len(X) - m + 1
-    if (length < 0):
-        print("error")
     knns = np.zeros(shape=(length, k), dtype=np.int64)
 
     dot_prev = None
