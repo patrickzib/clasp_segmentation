@@ -65,9 +65,7 @@ def _sliding_mean_std(X, m):
     segSum = s[m:] - s[:-m]
     segSumSq = sSq[m:] - sSq[:-m]
     movmean = segSum / m
-    diff = segSumSq / m - (segSum / m) ** 2
-    diff[diff<0] = 0    # check negative values
-    movstd = np.sqrt(diff)
+    movstd = np.sqrt(np.clip(segSumSq / m - (segSum / m) ** 2,0,None))  # at least 0
 
     # avoid dividing by too small std, like 0
     movstd = np.where(abs(movstd) < 0.001, 1, movstd)
