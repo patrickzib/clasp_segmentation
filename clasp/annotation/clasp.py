@@ -275,11 +275,11 @@ class ClaSPSegmentation(BaseSeriesAnnotator):
 
         # Change Points
         if self.fmt == "sparse":
-            return pd.Series(self.found_cps)
+            return pd.Series(self.found_cps, dtype='int64')
 
         # Segmentation
         elif self.fmt == "dense":
-            return self._get_interval_series(X, self.found_cps)
+            return self._get_interval_series(X, self.found_cps, dtype='int64')
 
     def _predict_scores(self, X):
         """Return scores in ClaSP's profile for each annotation.
