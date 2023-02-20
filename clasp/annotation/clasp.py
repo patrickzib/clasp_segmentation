@@ -64,6 +64,8 @@ def find_dominant_window_sizes(X, offset=0.05):
 
         return int(window_size / 2)
 
+    return window_sizes[idx[0]]
+
 
 def _is_trivial_match(candidate, change_points, n_timepoints, exclusion_radius=0.05):
     """Check if a candidate change point is in close proximity to other change points.
@@ -210,8 +212,8 @@ class ClaSPSegmentation(BaseSeriesAnnotator):
 
     Examples
     --------
-    >>> from sktime.annotation.clasp import ClaSPSegmentation
-    >>> from sktime.annotation.clasp import find_dominant_window_sizes
+    >>> from clasp.annotation.clasp import ClaSPSegmentation
+    >>> from clasp.annotation.clasp import find_dominant_window_sizes
     >>> from sktime.datasets import load_gun_point_segmentation
     >>> X, true_period_size, cps = load_gun_point_segmentation()
     >>> dominant_period_size = find_dominant_window_sizes(X)

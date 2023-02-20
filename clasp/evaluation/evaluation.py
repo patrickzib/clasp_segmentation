@@ -1,11 +1,16 @@
-import numpy as np
+#!/usr/bin/env python3 -u
+# -*- coding: utf-8 -*-
+# copyright: sktime developers, BSD-3-Clause License (see LICENSE file)
+"""Utility class for scoring functionality."""
 
-from sklearn.metrics.pairwise import paired_euclidean_distances
-
+__author__ = ["ermshaua", "patrickzib"]
 __all__ = [
     "covering",
     "f_measure",
 ]
+
+import numpy as np
+from sklearn.metrics.pairwise import paired_euclidean_distances
 
 def relative_change_point_distance(cps_true, cps_pred, ts_len):
     '''
@@ -19,17 +24,18 @@ def relative_change_point_distance(cps_true, cps_pred, ts_len):
 
     >>> score = relative_change_point_distance(cps, found_cps, ts.shape[0])
     '''
-    assert len(cps_true) == len(cps_pred), "true/predicted cps must have the same length."
+    assert len(cps_true) == len(
+        cps_pred), "true/predicted cps must have the same length."
     differences = 0
 
     for cp_pred in cps_pred:
         distances = paired_euclidean_distances(
-            np.array([cp_pred]*len(cps_true)).reshape(-1,1),
-            cps_true.reshape(-1,1)
+            np.array([cp_pred] * len(cps_true)).reshape(-1, 1),
+            cps_true.reshape(-1, 1)
         )
         cp_true_idx = np.argmin(distances, axis=0)
         cp_true = cps_true[cp_true_idx]
-        differences += np.abs(cp_pred-cp_true)
+        differences += np.abs(cp_pred - cp_true)
 
     return np.round(differences / (len(cps_true) * ts_len), 6)
 
