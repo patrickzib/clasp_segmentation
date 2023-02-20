@@ -24,7 +24,7 @@ pip install .
 
 from clasp.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
 X = ... # load dataset
-dominant_period_size = find_dominant_window_sizes(X)
+dominant_period_size = find_dominant_window_sizes(X) * 2
 clasp = ClaSPSegmentation(dominant_period_size, n_cps=1)
 found_cps = clasp.fit_predict(X)
 profiles = clasp.profiles
