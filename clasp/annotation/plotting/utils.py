@@ -118,7 +118,7 @@ def plot_time_series_with_profiles(
         1,
         sharex=True,
         gridspec_kw={"hspace": 0.05},
-        figsize=(20, 5 * len(profiles)),
+        figsize=(20, 3 * len(profiles)),
     )
     ax = ax.reshape(-1)
 
@@ -134,7 +134,7 @@ def plot_time_series_with_profiles(
 
     for i, profile in enumerate(profiles):
         ax[i + 1].plot(np.arange(len(profile)), profile, color="b")
-        ax[i + 1].set_ylabel(score_name + " " + str(i) + ". Split", fontsize=font_size)
+        ax[i + 1].set_ylabel(score_name + "\n" + str(i) + ". Split", fontsize=font_size)
 
     ax[-1].set_xlabel("split point $s$", fontsize=font_size)
     ax[0].set_title(ts_name, fontsize=font_size)
@@ -171,5 +171,6 @@ def plot_time_series_with_profiles(
             )
 
     ax[0].legend(prop={"size": font_size})
+    plt.tight_layout()
 
     return fig, ax
